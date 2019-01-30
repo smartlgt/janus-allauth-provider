@@ -1,5 +1,5 @@
 from setuptools import setup, find_packages
-from janus import __version__
+from janus_provider import __version__
 
 
 setup(
