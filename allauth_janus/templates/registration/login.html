@@ -1,0 +1,23 @@
+
+{% load account socialaccount %}
+
+
+	<form data-ajax="false" method="post" action="/accounts/login">
+	{% csrf_token %}
+
+
+            {% get_providers as socialaccount_providers %}
+
+            {% if socialaccount_providers %}
+            <h3>Single sign-on</h3>
+
+            <p>Please sign in with the SSO system.</p>
+
+            <div class="socialaccount_ballot">
+
+              <ul class="socialaccount_providers">
+                {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+              </ul>
+            </div>
+            {% endif %}
+	</form>
