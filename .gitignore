@@ -1,6 +1,7 @@
 .idea
 
 janus_client
+janus_provider
 manage.py
 
 
