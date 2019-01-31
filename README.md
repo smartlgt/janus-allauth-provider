@@ -1,6 +1,6 @@
 # installation
 
-`pip install git+https://github.com/smartlgt/django-janus#egg=allauth_janus`
+`pip install git+https://github.com/smartlgt/janus-allauth-provider#egg=allauth_janus`
 
 # configuration
 setup your `settings.py`:
