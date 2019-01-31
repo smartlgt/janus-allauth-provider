@@ -18,7 +18,7 @@ class JanusProvider(OAuth2Provider):
         return ['read']
 
     def extract_uid(self, data):
-        return data['user_id']
+        return data['id']
 
     def extract_email_addresses(self, data):
         return [EmailAddress(email=data['email'],
@@ -29,7 +29,7 @@ class JanusProvider(OAuth2Provider):
         return dict(email=data['email'],
                     last_name=data['last_name'],
                     first_name=data['first_name'],
-                    username=data['username'])
+                    username=data['id'])
 
 
 provider_classes = [JanusProvider]

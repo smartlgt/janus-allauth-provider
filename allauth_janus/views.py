@@ -23,19 +23,10 @@ class JanusOAuth2Adapter(OAuth2Adapter):
             self.profile_url,
             params={'access_token': token})
         extra_data = response.json()
-        extra_data2 =  {}
-        if extra_data:
-            extra_data2 = {
-                'user_id': extra_data['id'],
-                'last_name': extra_data['last_name'],
-                'first_name': extra_data['first_name'],
-                'name': extra_data['name'],
-                'email': extra_data['email'],
-                'username': extra_data['id'],
-            }
+
         return self.get_provider().sociallogin_from_response(
             request,
-            extra_data2)
+            extra_data)
 
 
 oauth2_login = OAuth2LoginView.adapter_view(JanusOAuth2Adapter)
