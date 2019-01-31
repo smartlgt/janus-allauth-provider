@@ -11,7 +11,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'janus_provider',
+    'allauth_janus',
     
 ]
 ```
