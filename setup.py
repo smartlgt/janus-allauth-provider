@@ -1,5 +1,5 @@
 from setuptools import setup, find_packages
-from janus_provider import __version__
+from allauth_janus import __version__
 
 
 setup(
@@ -13,7 +13,7 @@ setup(
     zip_safe=False,
     packages=find_packages(),
     package_data={
-        "janus": ["janus/templates/*.html", ]},
+        "janus": ["allauth_janus/templates/*.html", ]},
     install_requires=[
         'django>=1.11',
         'django-allauth',
