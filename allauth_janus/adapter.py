@@ -51,13 +51,13 @@ class Adapter(DefaultSocialAccountAdapter):
         email = extra_data.get('email', None)
 
         if email:
+            # remove the old emails
+            EmailAddress.objects.filter(user=user).exclude(email=email).delete()
+
             if EmailAddress.objects.filter(email=email).exists():
                 em = EmailAddress.objects.filter(email=email).first()
                 em.set_as_primary()  # update user table email field
             else:
-                # remove the old email
-                EmailAddress.objects.filter(user=user).delete()
-
                 em = EmailAddress.objects.add_email(request=None, user=user, email=email, confirm=True)
                 em.set_as_primary()  # update user table email field
         else:
