@@ -49,6 +49,7 @@ class Adapter(DefaultSocialAccountAdapter):
 
         # sync email via user allauth class
         email = extra_data.get('email', None)
+        email_verified = extra_data.get('email_verified', False)
 
         if email:
             # remove the old emails
@@ -56,9 +57,11 @@ class Adapter(DefaultSocialAccountAdapter):
 
             if EmailAddress.objects.filter(email=email).exists():
                 em = EmailAddress.objects.filter(email=email).first()
+                em.verified=email_verified
+                em.save()
                 em.set_as_primary()  # update user table email field
             else:
-                em = EmailAddress.objects.add_email(request=None, user=user, email=email, confirm=True)
+                em = EmailAddress.objects.create(user=user, email=email, verified=email_verified, confirm=True)
                 em.set_as_primary()  # update user table email field
         else:
 
