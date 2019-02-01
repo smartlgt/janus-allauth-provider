@@ -1,3 +1,4 @@
+from allauth.account.models import EmailAddress
 from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
 from django.contrib.auth import get_user_model
 
@@ -22,7 +23,7 @@ class Adapter(DefaultSocialAccountAdapter):
         # permissions
         user.is_superuser = extra_data.get('is_superuser', False)
         if user.is_superuser:
-            user.is_staff = True # also allow superuser to log into the admin panel
+            user.is_staff = True  # also allow superuser to log into the admin panel
 
         groups = extra_data.get('groups', [])
 
@@ -47,9 +48,21 @@ class Adapter(DefaultSocialAccountAdapter):
         user.last_name = extra_data.get('last_name')
 
         # sync email via user allauth class
-        #user.email = extra_data.get('email')
+        email = extra_data.get('email', None)
 
-        #verified = True,
-        #primary = True
+        if email:
+            if EmailAddress.objects.filter(email=email).exists():
+                em = EmailAddress.objects.filter(email=email).first()
+                em.set_as_primary()  # update user table email field
+            else:
+                em = EmailAddress.objects.add_email(request=None, user=user, email=email, confirm=True)
+                em.set_as_primary()  # update user table email field
+        else:
+
+            # remove email from user field and delete the email address from allauth
+            old_email = user.email
+            if old_email:
+                user.email = ""
+                EmailAddress.objects.filter(user=user).delete()
 
         user.save()
