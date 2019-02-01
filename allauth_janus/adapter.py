@@ -61,7 +61,7 @@ class Adapter(DefaultSocialAccountAdapter):
                 em.save()
                 em.set_as_primary()  # update user table email field
             else:
-                em = EmailAddress.objects.create(user=user, email=email, verified=email_verified, confirm=True)
+                em = EmailAddress.objects.create(user=user, email=email, verified=email_verified)
                 em.set_as_primary()  # update user table email field
         else:
 
