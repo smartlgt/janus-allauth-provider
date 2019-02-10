@@ -28,14 +28,21 @@ ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = True
 
-SOCIALACCOUNT_ADAPTER = 'allauth_janus.adapter.Adapter'
+# disable signup for all normal requests (allow them for your social providers)
+ACCOUNT_ADAPTER = 'allauth_janus.adapter.NoNewUsersAccountAdapter'
+SOCIALACCOUNT_ADAPTER = 'allauth_janus.adapter.AllowNewUsersSocialAccountAdapter'
 
+# path to redirect after login
 LOGIN_REDIRECT_URL = "/"
+# force sso login via the janus provider (don't display a login page on this website)
+LOGIN_URL = "/accounts/janus/login/"
 
 ########################################
 ## JANUS
 ########################################
-ALLAUTH_JANUS_URL = 'https://janus.example.com'
+# define a custom function to handle your app need for data syncing
+#ALLAUTH_JANUS_PRE_SOCIAL_CALLBACK = 'app.socialauth.sync_janus_data'
+ALLAUTH_JANUS_URL = 'https://sso.example.com/oauth2'
 ALLAUTH_JANUS_REDIRECT_PROTOCOL = 'http'
 
 SITE_ID = 1

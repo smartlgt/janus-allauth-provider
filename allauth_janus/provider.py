@@ -31,5 +31,9 @@ class JanusProvider(OAuth2Provider):
                     first_name=data['first_name'],
                     username=data['id'])
 
+    def sociallogin_from_response(self, request, response):
+        social_account = super().sociallogin_from_response(request, response)
+        return social_account
+
 
 provider_classes = [JanusProvider]
