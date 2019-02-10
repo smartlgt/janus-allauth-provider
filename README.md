@@ -1,6 +1,6 @@
 # installation
 
-`pip install git+https://github.com/smartlgt/janus-allauth-provider@1.0.1#egg=allauth_janus`
+`pip install git+https://github.com/smartlgt/janus-allauth-provider@1.0.3#egg=allauth_janus`
 
 # configuration
 setup your `settings.py`:
