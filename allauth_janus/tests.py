@@ -5,8 +5,8 @@ from allauth.tests import MockedResponse, TestCase
 from .provider import JanusProvider
 
 
-class JanusTests(OAuth2TestsMixin, TestCase):
 
+class JanusOAuth2Tests(OAuth2TestsMixin, TestCase):
     provider_id = JanusProvider.id
 
     def get_mocked_response(self):
