@@ -1,6 +1,6 @@
 # installation
 
-`pip install git+https://github.com/smartlgt/janus-allauth-provider@1.0.4#egg=allauth_janus`
+`pip install git+https://github.com/smartlgt/janus-allauth-provider@1.0.5#egg=allauth_janus`
 
 # configuration
 setup your `settings.py`:
@@ -8,6 +8,8 @@ setup your `settings.py`:
 ```
 INSTALLED_APPS = [
     # your setup with allauth and allauth.socialaccount
+    'django.contrib.site',
+    
     'allauth',
     'allauth.account',
     'allauth.socialaccount',

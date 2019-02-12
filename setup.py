@@ -1,5 +1,6 @@
 from setuptools import setup, find_packages
-from allauth_janus import __version__
+
+__version__ = VERSION = (1, 0, 4)
 
 
 setup(
