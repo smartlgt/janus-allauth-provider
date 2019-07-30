@@ -15,6 +15,7 @@ def map_extra_data(user, extra_data):
 
     # permissions
     user.is_superuser = extra_data.get('is_superuser', False)
+    user.is_staff = False
     if user.is_superuser:
         user.is_staff = True  # also allow superuser to log into the admin panel
 
