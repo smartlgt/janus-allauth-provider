@@ -3,8 +3,9 @@ from allauth.account.adapter import DefaultAccountAdapter
 
 
 class Adapter(DefaultSocialAccountAdapter):
-    # this is deprecated, use the signal
-    pass
+    def pre_social_login(self, request, sociallogin):
+        # using the adapter pre_social_login function is is deprecated, use the signal
+        pass
 
 
 

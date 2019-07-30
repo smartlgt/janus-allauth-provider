@@ -1,23 +1,21 @@
-from allauth.socialaccount.signals import pre_social_login
-from django.conf import settings
 from django.dispatch import receiver
-from django.utils.module_loading import import_string
+from allauth.account.signals import user_signed_up
+from allauth.socialaccount.signals import social_account_updated
 
 from allauth_janus.helper import janus_sync_user_properties
 
-def load_function(path):
-    return import_string(path)
-
-@receiver(pre_social_login)
-def pre_social_login_handler(sender, request, sociallogin, **kwargs):
+@receiver(social_account_updated)
+def social_account_updated(sender, request, sociallogin, **kwargs):
 
     if sociallogin.account.provider == "janus":
+        janus_sync_user_properties(request, sociallogin)
 
-        if hasattr(settings, 'ALLAUTH_JANUS_PRE_SOCIAL_CALLBACK'):
-            func = load_function(settings.ALLAUTH_JANUS_PRE_SOCIAL_CALLBACK)
-            func(sender, request, sociallogin, **kwargs)
-        else:
-            # call default function
-            janus_sync_user_properties(request, sociallogin)
+@receiver(user_signed_up)
+def user_signed_up(sender, request, user, **kwargs):
+
+    sociallogin = kwargs.get('sociallogin', None)
+
+    if sociallogin and sociallogin.account.provider == "janus":
+        janus_sync_user_properties(request, sociallogin)
 
 

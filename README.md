@@ -43,7 +43,7 @@ LOGIN_URL = "/accounts/janus/login/"
 ## JANUS
 ########################################
 # define a custom function to handle your app need for data syncing
-#ALLAUTH_JANUS_PRE_SOCIAL_CALLBACK = 'app.socialauth.sync_janus_data'
+#ALLAUTH_JANUS_PRE_SOCIAL_CALLBACK = 'allauth_janus.helper.janus_sync_user_properties'  # (default)
 ALLAUTH_JANUS_URL = 'https://sso.example.com/oauth2'
 ALLAUTH_JANUS_REDIRECT_PROTOCOL = 'http'
 
@@ -67,6 +67,11 @@ setup the social app credentials for the social app "janus"
 
 # debug
 if you see some `Social Network Login Failure` a good start is the OAuth2CallbackView class dispatch function
+
+# sync custom data from janus
+add your custom code to the signal handler for `social_account_updated` and `user_signed_up`
+
+see `signals.py` for example
 
 ## sessions
 your django sessions need to work, before a client leave the application and calls the sso, a random verifier and your login state will be stored in a session, on return this information need to be present.

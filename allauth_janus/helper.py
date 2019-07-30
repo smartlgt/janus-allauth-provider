@@ -1,11 +1,8 @@
-def janus_sync_user_properties(request, sociallogin):
-    from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model
 
+def janus_sync_user_properties(request, sociallogin):
     try:
         user = get_user_model().objects.get(username=sociallogin.account.uid)
-        if not sociallogin.is_existing:
-            sociallogin.connect(request, user)
-
         map_extra_data(user, sociallogin.account.extra_data)
 
     except get_user_model().DoesNotExist:
