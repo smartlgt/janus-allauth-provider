@@ -33,7 +33,7 @@ def user_logged_out(sender, request, user, **kwargs):
     from allauth.socialaccount.models import SocialToken
     token = SocialToken.objects.filter(account__user=user, account__provider='janus').first()
 
-    remote_logout = bool(settings.get('ALLAUTH_REMOTE_LOGOUT', False))
+    remote_logout = bool(getattr(settings, 'ALLAUTH_JANUS_REMOTE_LOGOUT', False))
 
     if remote_logout and token:
         url = settings.ALLAUTH_JANUS_URL + '/o/logout/'
