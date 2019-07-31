@@ -46,7 +46,7 @@ LOGIN_URL = "/accounts/janus/login/"
 #ALLAUTH_JANUS_PRE_SOCIAL_CALLBACK = 'allauth_janus.helper.janus_sync_user_properties'  # (default)
 ALLAUTH_JANUS_URL = 'https://sso.example.com/oauth2'
 ALLAUTH_JANUS_REDIRECT_PROTOCOL = 'http'
-ALLAUTH_REMOTE_LOGOUT = True
+ALLAUTH_JANUS_REMOTE_LOGOUT = True
 
 SITE_ID = 1
 
