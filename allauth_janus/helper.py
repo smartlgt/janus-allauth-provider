@@ -2,7 +2,13 @@ from django.contrib.auth import get_user_model
 
 def janus_sync_user_properties(request, sociallogin):
     try:
+        # force connecting of an existing user with the same username
+        # if we remove this, a user that already exists in the local database and was not signed up via janus will
+        # not be able to login and will hang
         user = get_user_model().objects.get(username=sociallogin.account.uid)
+        if not sociallogin.is_existing:
+            sociallogin.connect(request, user)
+
         map_extra_data(user, sociallogin.account.extra_data)
 
     except get_user_model().DoesNotExist:
