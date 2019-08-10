@@ -2,7 +2,8 @@ import requests
 from django.conf import settings
 from django.dispatch import receiver
 from allauth.account.signals import user_signed_up, user_logged_out
-from allauth.socialaccount.signals import social_account_updated
+from allauth.socialaccount.signals import social_account_updated, pre_social_login
+from django.utils.module_loading import import_string
 
 from allauth_janus.helper import janus_sync_user_properties
 
@@ -46,3 +47,28 @@ def user_logged_out(sender, request, user, **kwargs):
                 pass
         except Exception as e:
             pass
+
+
+def load_function(path):
+    return import_string(path)
+
+
+def noop():
+    pass
+
+
+@receiver(pre_social_login)
+def pre_social_login_handler(sender, request, sociallogin, **kwargs):
+
+    if sociallogin.account.provider == "janus":
+        """
+        we call the connect function if a username exists in the application and never signed up via sso
+        this will be matched via the username in janus_sync_user_properties
+        """
+
+        if hasattr(settings, 'ALLAUTH_JANUS_PRE_SOCIAL_CALLBACK'):
+            func = load_function(settings.ALLAUTH_JANUS_PRE_SOCIAL_CALLBACK)
+            func(sender, request, sociallogin, **kwargs)
+        else:
+            # call default function
+            janus_sync_user_properties(request, sociallogin)

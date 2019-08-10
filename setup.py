@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-__version__ = VERSION = (1, 1, 2)
+__version__ = VERSION = (1, 1, 5)
 
 
 setup(
