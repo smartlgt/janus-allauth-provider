@@ -8,7 +8,7 @@ setup your `settings.py`:
 ```
 INSTALLED_APPS = [
     # your setup with allauth and allauth.socialaccount
-    'django.contrib.site',
+    'django.contrib.sites',
     
     'allauth',
     'allauth.account',
