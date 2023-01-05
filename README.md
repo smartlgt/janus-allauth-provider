@@ -25,7 +25,7 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
-# ALLAUTh settigs
+# ALLAUTH settings
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = True
@@ -48,11 +48,17 @@ ALLAUTH_JANUS_URL = 'https://sso.example.com/oauth2'
 ALLAUTH_JANUS_REDIRECT_PROTOCOL = 'http'
 ALLAUTH_JANUS_REMOTE_LOGOUT = True
 
-# disable default linking by username on signup behavior (if account allready exists)
+# disable default linking by username on signup behavior (if account already exists)
 # ALLAUTH_JANUS_PRE_SOCIAL_CALLBACK=allauth_janus.signals.noop  
 
 SITE_ID = 1
 
+```
+## OIDC
+```
+# Enable usage of OIDC endpoints to retrieve userinfo
+ALLAUTH_JANUS_OIDC = True 
+ALLAUTH_JANUS_CUSTOM_SCOPES = ["openid", "profile", "email"]
 ```
 
 setup your man urls.py` and include allauth urls
