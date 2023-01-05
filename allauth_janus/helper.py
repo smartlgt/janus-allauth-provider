@@ -1,3 +1,4 @@
+from allauth_janus.app_settings import ALLAUTH_JANUS_OIDC, ALLAUTH_JANUS_CUSTOM_SCOPES
 from django.contrib.auth import get_user_model
 
 def janus_sync_user_properties(request, sociallogin):
@@ -44,8 +45,17 @@ def map_extra_data(user, extra_data):
             pass
 
     # user data
-    user.first_name = extra_data.get('first_name')
-    user.last_name = extra_data.get('last_name')
+    if ALLAUTH_JANUS_OIDC:
+        if 'preferred_username' in extra_data:
+            user.username = extra_data.get('preferred_username', '')
+        else:
+            user.username = extra_data.get('sub', '')
+        user.first_name = extra_data.get('given_name', '')
+        user.last_name = extra_data.get('family_name', '')
+    else:
+        user.username = extra_data.get('id', '')
+        user.first_name = extra_data.get('first_name', '')
+        user.last_name = extra_data.get('last_name', '')
 
     # sync email via user allauth class
     email = extra_data.get('email', None)
@@ -73,3 +83,13 @@ def map_extra_data(user, extra_data):
             EmailAddress.objects.filter(user=user).delete()
 
     user.save()
+
+
+def extract_username(data: dict, is_oidc: bool) -> str:
+    if is_oidc and 'profile' in ALLAUTH_JANUS_CUSTOM_SCOPES:
+        # If the `profile` scope is being requested the username should be available.
+        return data['preferred_username']
+    elif is_oidc:
+        return data['sub']
+    else:
+        return data['id']

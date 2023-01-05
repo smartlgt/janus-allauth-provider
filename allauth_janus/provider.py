@@ -1,6 +1,9 @@
-from allauth.account.models import EmailAddress
+from allauth_janus.app_settings import ALLAUTH_JANUS_CUSTOM_SCOPES, ALLAUTH_JANUS_OIDC
+
 from allauth.socialaccount.providers.base import ProviderAccount
 from allauth.socialaccount.providers.oauth2.provider import OAuth2Provider
+
+from allauth_janus.helper import extract_username
 
 
 class JanusAccount(ProviderAccount):
@@ -15,25 +18,23 @@ class JanusProvider(OAuth2Provider):
     account_class = JanusAccount
 
     def get_default_scope(self):
-        return ['read']
+        return ['openid']
 
+    def get_scope(self, request):
+        # Use custom scopes if set else use default.
+        scope = ALLAUTH_JANUS_CUSTOM_SCOPES or self.get_default_scope()
+        dynamic_scope = request.GET.get("scope", None)
+        if dynamic_scope:
+            scope.extend(dynamic_scope.split(","))
+        return scope
+
+    # The `uid` and `username` must be the same.
+    # The actual user data is written to the User model in `map_extra_data`.
     def extract_uid(self, data):
-        return data['id']
-
-    def extract_email_addresses(self, data):
-        return [EmailAddress(email=data['email'],
-                      verified=True,
-                      primary=True)]
+        return extract_username(data, ALLAUTH_JANUS_OIDC)
 
     def extract_common_fields(self, data):
-        return dict(email=data['email'],
-                    last_name=data['last_name'],
-                    first_name=data['first_name'],
-                    username=data['id'])
-
-    def sociallogin_from_response(self, request, response):
-        social_account = super().sociallogin_from_response(request, response)
-        return social_account
+        return {'username': extract_username(data, ALLAUTH_JANUS_OIDC)}
 
 
 provider_classes = [JanusProvider]

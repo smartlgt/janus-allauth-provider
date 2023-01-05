@@ -1,3 +1,5 @@
+from allauth_janus.app_settings import ALLAUTH_JANUS_PROFILE_URL
+
 import requests
 
 from allauth.socialaccount.providers.oauth2.views import (
@@ -14,7 +16,7 @@ class JanusOAuth2Adapter(OAuth2Adapter):
     provider_id = JanusProvider.id
     access_token_url = settings.ALLAUTH_JANUS_URL + '/o/token/'
     authorize_url = settings.ALLAUTH_JANUS_URL + '/o/authorize/'
-    profile_url = settings.ALLAUTH_JANUS_URL + '/o/profile/'
+    profile_url = ALLAUTH_JANUS_PROFILE_URL
     supports_state = True
     redirect_uri_protocol = settings.ALLAUTH_JANUS_REDIRECT_PROTOCOL
 
