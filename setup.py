@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-__version__ = VERSION = (1, 2, 0)
+__version__ = VERSION = (1, 2, 1)
 
 
 setup(
@@ -10,7 +10,7 @@ setup(
     description="Janus provider is a allauth provider for authentication with the django janus SSO.",
     author="Daniel Leinfelder",
     author_email="daniel@smart-lgt.com",
-    url="http://github.com/smartlgt/janus-allauth-provider",
+    url="https://github.com/smartlgt/janus-allauth-provider",
     zip_safe=False,
     packages=find_packages(),
     package_data={

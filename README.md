@@ -1,6 +1,6 @@
 # installation
 
-`pip install git+https://github.com/smartlgt/janus-allauth-provider@1.1.5#egg=allauth_janus`
+`pip install git+https://github.com/smartlgt/janus-allauth-provider@1.2.1#egg=allauth_janus`
 
 # configuration
 setup your `settings.py`:
@@ -25,7 +25,7 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
-# ALLAUTh settigs
+# ALLAUTH settings
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = True
@@ -48,11 +48,36 @@ ALLAUTH_JANUS_URL = 'https://sso.example.com/oauth2'
 ALLAUTH_JANUS_REDIRECT_PROTOCOL = 'http'
 ALLAUTH_JANUS_REMOTE_LOGOUT = True
 
-# disable default linking by username on signup behavior (if account allready exists)
+# disable default linking by username on signup behavior (if account already exists)
 # ALLAUTH_JANUS_PRE_SOCIAL_CALLBACK=allauth_janus.signals.noop  
 
 SITE_ID = 1
 
+```
+## OIDC
+```
+# Enable usage of OIDC endpoints to retrieve userinfo
+ALLAUTH_JANUS_OIDC = True 
+# The preferred way to configure allauth providers.
+SOCIALACCOUNT_PROVIDERS = {
+    "janus": {
+        # The client id and client secret can be configured via the admin backend (see #first run).
+        # Alternatively they can be configured.
+        "APP": {
+            "client_id": "123",
+            "secret": "456",
+        },
+        # Scope and PKCE can only be configured with this setting.
+        # Default: `openid`
+        "SCOPE": [
+            "openid",
+            "profile",
+            "email"
+        ],
+        # Default: True
+        "OAUTH_PKCE_ENABLED": True
+    }
+}
 ```
 
 setup your man urls.py` and include allauth urls
