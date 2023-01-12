@@ -1,6 +1,4 @@
-from allauth.socialaccount.providers.oauth2.utils import generate_code_challenge
-
-from allauth_janus.app_settings import ALLAUTH_JANUS_CUSTOM_SCOPES, ALLAUTH_JANUS_OIDC, ALLAUTH_JANUS_OAUTH_PKCE_ENABLED
+from allauth_janus.app_settings import ALLAUTH_JANUS_OIDC
 
 from allauth.socialaccount.providers.base import ProviderAccount
 from allauth.socialaccount.providers.oauth2.provider import OAuth2Provider
@@ -21,20 +19,6 @@ class JanusProvider(OAuth2Provider):
 
     def get_default_scope(self):
         return ['openid']
-
-    def get_scope(self, request):
-        # Use custom scopes if set else use default.
-        scope = ALLAUTH_JANUS_CUSTOM_SCOPES or self.get_default_scope()
-        dynamic_scope = request.GET.get("scope", None)
-        if dynamic_scope:
-            scope.extend(dynamic_scope.split(","))
-        return scope
-
-    def get_pkce_params(self):
-        if ALLAUTH_JANUS_OAUTH_PKCE_ENABLED or self.pkce_enabled_default:
-            pkce_code_params = generate_code_challenge()
-            return pkce_code_params
-        return {}
 
     # The `uid` and `username` must be the same.
     # The actual user data is written to the User model in `map_extra_data`.

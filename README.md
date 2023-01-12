@@ -58,7 +58,26 @@ SITE_ID = 1
 ```
 # Enable usage of OIDC endpoints to retrieve userinfo
 ALLAUTH_JANUS_OIDC = True 
-ALLAUTH_JANUS_CUSTOM_SCOPES = ["openid", "profile", "email"]
+# The preferred way to configure allauth providers.
+SOCIALACCOUNT_PROVIDERS = {
+    "janus": {
+        # The client id and client secret can be configured via the admin backend (see #first run).
+        # Alternatively they can be configured.
+        "APP": {
+            "client_id": "123",
+            "secret": "456",
+        },
+        # Scope and PKCE can only be configured with this setting.
+        # Default: `openid`
+        "SCOPE": [
+            "openid",
+            "profile",
+            "email"
+        ],
+        # Default: True
+        "OAUTH_PKCE_ENABLED": True
+    }
+}
 ```
 
 setup your man urls.py` and include allauth urls

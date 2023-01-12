@@ -1,4 +1,4 @@
-from allauth_janus.app_settings import ALLAUTH_JANUS_OIDC, ALLAUTH_JANUS_CUSTOM_SCOPES
+from allauth_janus.app_settings import ALLAUTH_JANUS_OIDC
 from django.contrib.auth import get_user_model
 
 def janus_sync_user_properties(request, sociallogin):
@@ -92,10 +92,8 @@ def map_extra_data(user, extra_data):
 
 
 def extract_username(data: dict, is_oidc: bool) -> str:
-    if is_oidc and 'profile' in ALLAUTH_JANUS_CUSTOM_SCOPES:
-        # If the `profile` scope is being requested the username should be available.
-        return data['preferred_username']
-    elif is_oidc:
-        return data['sub']
+    if is_oidc:
+        # If the `preferred_username` is available use that. Else use the `sub` claim.
+        return data.get('preferred_username', data['sub'])
     else:
         return data['id']
